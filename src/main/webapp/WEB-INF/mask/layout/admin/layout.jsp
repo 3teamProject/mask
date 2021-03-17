@@ -23,24 +23,24 @@
    <title>이젠Mask 관리자페이지</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/c/resources/admin_css/bootstrapadmin.min.css" rel="stylesheet">
+    <link href="/mask/resources/admin_css/bootstrapadmin.min.css" rel="stylesheet">
 
 
 	 <!-- Custom CSS -->
-    <link href="/c/resources/admin_css/sb-admin-2.css" rel="stylesheet">
+    <link href="/mask/resources/admin_css/sb-admin-2.css" rel="stylesheet">
 	<!-- jQuery -->
 	
-    <script src="/c/resources/admin_js/jquery.min.js"></script>
+    <script src="/mask/resources/admin_js/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="/c/resources/admin_js/bootstrap.min.js"></script>
+    <script src="/mask/resources/admin_js/bootstrap.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="/c/resources/admin_js/sb-admin-2.js"></script>
+    <script src="/mask/resources/admin_js/sb-admin-2.js"></script>
     
-    <link href="/c/resources/summerboard/summernote-lite.css" rel="stylesheet">
-<script src="/c/resources/summerboard/summernote-lite.js"></script>
-<script src="/c/resources/summerboard/summernote-ko-KR.min.js"></script>
+    <link href="/mask/resources/summerboard/summernote-lite.css" rel="stylesheet">
+<script src="/mask/resources/summerboard/summernote-lite.js"></script>
+<script src="/mask/resources/summerboard/summernote-ko-KR.min.js"></script>
 
     
 </head>

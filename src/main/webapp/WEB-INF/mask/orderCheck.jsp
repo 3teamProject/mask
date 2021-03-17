@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 
-<%@ include file="/WEB-INF/views/layout/header.jsp"%>
+<%@ include file="/WEB-INF/mask/layout/header.jsp"%>
 
 <!DOCTYPE html>
 <html>
@@ -62,7 +62,7 @@ body {
       </div> 
       
  <footer >
-<%@ include file="/WEB-INF/views/layout/footer.jsp"%> 
+<%@ include file="/WEB-INF/mask/layout/footer.jsp"%> 
 </footer>
       
 </body>

@@ -2,7 +2,7 @@
     pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="ko">
-<%@ include file="/WEB-INF/views/layout/admin/layout.jsp"%>
+<%@ include file="/WEB-INF/mask/layout/admin/layout.jsp"%>
 <head>
 <script type="text/javascript">
 //주문번호 같은 열 합치는 Jquery

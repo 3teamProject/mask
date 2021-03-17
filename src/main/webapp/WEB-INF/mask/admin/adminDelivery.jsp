@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-<%@ include file="/WEB-INF/views/layout/admin/layout.jsp"%>
+<%@ include file="/WEB-INF/mask/layout/admin/layout.jsp"%>
 
 
         <div id="page-wrapper">

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%@ include file="/WEB-INF/views/layout/admin/layout.jsp"%>
+<%@ include file="/WEB-INF/mask/layout/admin/layout.jsp"%>
 <style type="text/css">
 #but
 {
