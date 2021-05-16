@@ -3,6 +3,8 @@
    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var='root' value="${pageContext.request.contextPath}/" />
 
+<c:set var='tot' value='0'/>
+<c:set var="tot_amount" value="0"/> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +12,10 @@
 <%-- <%@ include file="/WEB-INF/include/include-header.jspf"%> --%>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
 
 
 
@@ -174,7 +180,7 @@
 	
 	
 </style>
-<c:import url="/WEB-INF/mask/layout/header.jsp"/>
+
 </head>
 
 <div style="height: 160px;"></div>
@@ -183,20 +189,19 @@
 </div>
 <div style="height: 50px;"></div>
 <div class="container" style="width:70%;">
-<form name="orderWrite" id="orderWrite" method="post" action="${root}goodsOrderInsert.mk"> 
-<input type="hidden" name="GOODS_NAME" value="${map2.GOODS_NAME}">
-<input type="hidden" name="GOODS_AMOUNT" value="${map2.GOODS_AMOUNT}">
-<input type="hidden" name="MEM_NUM" value="${map2.MEM_NUM}">
-<input type="hidden" name="GOODS_CATEGORY" value="${map2.GOODS_CATEGORY}">
-<input type="hidden" name="GOODS_NUM" value="${map2.GOODS_NUM}">
 
-<input type="hidden" name="ORDER_USER_NAME" value="${map.MEM_NAME}">
+<form name="orderWrite" id="orderWrite" method="post" action="${root}goodsOrderInsert.mk?Basket=Y">
+<%-- <input type="hidden" name="GOODS_NAME" value="${map.GOODS_NAME}">
+<input type="hidden" name="GOODS_AMOUNT" value="${map.GOODS_AMOUNT}">
+<input type="hidden" name="ORDER_USER_NAME" value="${map.MEM_NAME}"> --%>
 
 <!-- 주문할 상품 리스트 (basketList에서 긁어옴) -->
    <div class="table-responsive">
          <table class="table table-striped" style="font-family: ff">
             <thead>
                <tr>
+              
+
                   <th colspan="7">주문 상품 정보</th>
                </tr>
                <tr>
@@ -208,19 +213,28 @@
                </tr>
             </thead>
             <tbody>
+            	<c:forEach items="${list}" var="row"> 	
                 <tr>
-                	<th  colspan="3" style="text-align: center ; width:30px;">${map2.GOODS_NAME}</th>
-                	<th style="text-align: center">${map2.GOODS_CATEGORY}</th>
-                	<th style="text-align: center">${map2.GOODS_AMOUNT}</th>
-                	<th style="text-align: center">${map2.GOODS_PRICE}</th>
-                	<th style="text-align: center">${map2.ORDER_TCOST}</th>
+                	<th  colspan="3" style="text-align: center ; width:30px;">${row.GOODS_NAME}</th>
+                	<th style="text-align: center">${row.GOODS_CATEGORY}</th>
+                	<th style="text-align: center">${row.GOODS_AMOUNT}</th>
+                	<th style="text-align: center">${row.GOODS_PRICE}</th>
+                	<th style="text-align: center">${row.GOODS_PRICE * row.GOODS_AMOUNT} 
+                		<c:set var="tot" value="${tot +row.GOODS_PRICE * row.GOODS_AMOUNT }"/> 
+                		<c:set var="tot_amount" value="${tot_amount + row.GOODS_AMOUNT }"/> 
+                	</th>
                 </tr>
+                </c:forEach>
             </tbody>
          </table>
       </div>
       <hr>
       
+      <input type="hidden" name="MEM_NUM" value="${map.MEM_NUM}">
+      <input type="hidden" name="GOODS_AMOUNT" value="${tot_amount}">
+       <input type="hidden" name="ORDER_USER_NAME" value="${map.MEM_NAME}">
       <!-- 주문자 정보 -->
+       
       
        <div class="table-responsive">
       
@@ -238,7 +252,7 @@
          <tr>
          	
             <td>주문자</td>            
-            <td><input type="text" id="NAME" name="ORDER_USER_NAME" class="form-control"  style="width:20%;" value="${map.MEM_NAME}" disabled="disabled"></td>                        
+            <td><input type="text" id="NAME" name="s" class="form-control"  style="width:20%;" value="${map.MEM_NAME}" disabled="disabled"></td>                        
          </tr>
          <tr>
             <td>휴대전화</td>
@@ -374,26 +388,21 @@
          </tr>
          
          <tr align="center">
-            <td><strong><input type="text" id="ORDER_cost" name="ORDER_PRICE" readonly="readonly" value="${map2.ORDER_TCOST}"></strong>원</td>
+            <td><strong><input type="text" id="ORDER_cost" name="ORDER_PRICE" readonly="readonly" value="${tot }"></strong>원</td>
             <td><strong><input type="text" id="ORDER_DCOST" name="ORDER_DCOST" value="3000" readonly></strong>원</td>
-            <td><strong><input type="text" id="ORDER_TCOST" name="ORDER_TCOST" readonly="readonly" value="${map2.ORDER_TCOST+3000}"></strong>원</td>
+            <td><strong><input type="text" id="ORDER_TCOST" name="ORDER_TCOST" readonly="readonly" value="${tot+3000}"></strong>원</td>
          </tr>
       </table>
       </div>
       <hr>
-      <c:if test="${not empty A }">
-      	<input type="hidden" name="A" value="A">
-      </c:if>
+      
       <!-- 결제 버튼 -->
       <div align="center" style="margin-top:50px;" class="center-btn">
-         <input type="submit" name="order_pay" value="주문하기" onclick="fn_order_pay()" style="border:1px solid rgb(53, 52, 52); background: #616060;  cursor: pointer; color:rgb(230, 230, 230); padding:10px 20px; border-radius:10px;  outline: none;">
-         <input type="submit" name="kakao_pay" value="카카오결제" id="apibtn" style="border:1px solid rgb(53, 52, 52); background: #616060;  cursor: pointer; color:rgb(230, 230, 230); padding:10px 20px; border-radius:10px;  outline: none;">
+         <input type="submit" value="주문하기" onclick="fn_order_pay()" style="border:1px solid rgb(53, 52, 52); background: #616060;  cursor: pointer; color:rgb(230, 230, 230); padding:10px 20px; border-radius:10px;  outline: none;">
          <input type="button" value="주문취소" onClick="location.href='/muscle/shop/basketList.do'" style="border:1px solid rgb(53, 52, 52); background: #616060;  cursor: pointer; color:rgb(230, 230, 230); padding:10px 20px; border-radius:10px;  outline: none;">
       </div>
  </form>
 </div>
-
-
 <!-- footer       -->
 <div style="height: 80px;"></div>
 
@@ -431,23 +440,6 @@ document.querySelector('#chkinfo').addEventListener('change',()=>{
 		
 })
 
-
-
-$(function(){ 
-	$('#apibtn').click(function(){ 
-	$.ajax({ 
-		url:'/kakaopay.mk' ,
-		dataType:'json' ,
-		success:function(data) { 
-			var box = data.next_redirect_pc_url;
-			window.open()
-		} ,
-		error:function(error){ 
-			alert(error);
-		}
-	});
-	});
-});
 
 
 
