@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var='root' value="${pageContext.request.contextPath}/" />
 <!DOCTYPE html>
 <html lang="ko">
 <%@ include file="/WEB-INF/mask/layout/admin/layout.jsp"%>
@@ -60,7 +63,7 @@ $.fn.rowspan = function(colIdx, isStats) {
 .paging strong{color:#fff;background:#337AB7;border:1px solid #337AB7;}
 .paging .page_arw{font-size:11px;line-height:30px;}
 
-						
+					
 		@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");				
 #but
 {
@@ -92,6 +95,9 @@ $.fn.rowspan = function(colIdx, isStats) {
 
 </style>
 </head>
+
+<body>
+<div id="load_fn">	
 <div id="page-wrapper">
 <div class="row" style="padding-left:15px;width:900px;">    
 	<h1 class="page-header">주문목록</h1>
@@ -107,20 +113,23 @@ $.fn.rowspan = function(colIdx, isStats) {
 					class="dataTables_wrapper form-inline dt-bootstrap no-footer">
 					<div class="row" style="margin-bottom:5px;">
 						<div class="col-sm-6">
-							<a href="/pet/admin/adminOrderAllList.dog?searchNum=0&isSearch="><button type="button" class="btn btn-outline btn-default">전체</button></a>
-							<select class="form-control" name="select" onchange="window.open(value,'_self');">
-								<option value ="">--결재방식--</option>
-								<option value ="/pet/admin/adminOrderAllList.dog?searchNum=1&isSearch=무통장입금">무통장입금</option>
-								<option value ="/pet/admin/adminOrderAllList.dog?searchNum=1&isSearch=카드결재">카드결제</option>
+							<a href="/pet/admin/adminOrderAllList.dog?searchNum=0&isSearch=">
+							<button class="btn" id="btnAAA">전체</button>
+							</a>
+							<select class="form-control" name="select" id="order_pay_search">
+								<option value ="선택">--결재방식--</option>
+								<option value ="무통장"  <c:if test="${not empty list && list.get(0).Select_ORDER_PAY eq '무통장'}">selected</c:if>>무통장입금</option>
+								<option value ="카드" <c:if test="${not empty list && list.get(0).Select_ORDER_PAY eq '카드'}">selected</c:if>>카드결제</option>
 							</select>
-							<select class="form-control" name="select" onchange="window.open(value,'_self');">
-								<option value ="">--주문상태--</option>
-								<option value ="/pet/admin/adminOrderAllList.dog?searchNum=2&isSearch=상품준비">무통장입금전</option>
-								<option value ="/pet/admin/adminOrderAllList.dog?searchNum=2&isSearch=입금대기">결제완료</option>
-								<option value ="/pet/admin/adminOrderAllList.dog?searchNum=2&isSearch=배송중">배송중</option>
-								<option value ="/pet/admin/adminOrderAllList.dog?searchNum=2&isSearch=배송완료">배송완료</option>
-								<option value ="/pet/admin/adminOrderAllList.dog?searchNum=2&isSearch=구매완료">구매확정</option>
 							
+							<select class="form-control" name="select" id="Select_AORDER_STATE" >
+								<option value ="선택">--주문상태--</option>
+								<option value ="무통장입금전" <c:if test="${not empty list && list.get(0).Select_AORDER_STATE eq '무통장입금전'}">selected</c:if>>무통장입금전</option>
+								<option value ="결제완료" <c:if test="${not empty list && list.get(0).Select_AORDER_STATE eq '결제완료'}">selected</c:if>>결제완료</option>
+								<option value ="배송중" <c:if test="${not empty list && list.get(0).Select_AORDER_STATE eq '배송중'}">selected</c:if>>배송중</option>
+								<option value ="배송완료" <c:if test="${not empty list && list.get(0).Select_AORDER_STATE eq '배송완료'}">selected</c:if>>배송완료</option>
+								<option value ="반품진행중" <c:if test="${not empty list && list.get(0).Select_AORDER_STATE eq '반품진행중'}">selected</c:if>>반품진행중</option>
+								<option value ="구매확정" <c:if test="${not empty list && list.get(0).Select_AORDER_STATE eq '구매확정'}">selected</c:if>>구매확정</option>
 							</select>													
 						</div>
 						<div class="col-sm-6" style="text-align:right;">
@@ -136,41 +145,57 @@ $.fn.rowspan = function(colIdx, isStats) {
 								aria-describedby="dataTables-example_info">
 								<thead>
 									<tr role="row" style="vertical-align:middle;">
-										<th style="width: 5%; text-align:center;vertical-align:middle;">주문번호</th>
+										<th  style="width: 5%; text-align:center;vertical-align:middle;">주문번호</th>
 										<th style="width: 4%; text-align:center;vertical-align:middle;">주문자</th>										
 										<th style="width: 5%; text-align:center;vertical-align:middle;">결제방법</th>
-										<th style="width: 6%; text-align:center;vertical-align:middle;">상품명</th>
-										<th style="width: 4%; text-align:center;vertical-align:middle;">수량</th>
-										<th style="width: 1%; text-align:center;vertical-align:middle;">입금상태</th>
+										<th style="width: 5%; text-align:center;vertical-align:middle;">상품명</th>
+										<th style="width: 2%; text-align:center;vertical-align:middle;">옵션</th>
+										<th style="width: 3%; text-align:center;vertical-align:middle;">수량</th>
+										<th style="width: 1%; text-align:center;vertical-align:middle;">주문상태</th>
 										<th style="width: 10%; text-align:center;vertical-align:middle;">주문일자</th>		
 										<th style="width: 1%; text-align:center;vertical-align:middle;">수정</th>								
 									</tr>
 								</thead>
 								
 								
-									<tbody>							
+									<tbody>			
+								<c:choose>
+								<c:when test="${fn:length(list)>0 && list.get(0).ORDER_NUM!=null}">
+									<c:forEach items="${list}" var="row"> 				
 									<tr class="gradeA even" role="row">
-										<td style="text-align:center;vertical-align:middle;">1</td>
-										<td style="text-align:center;vertical-align:middle;">홍길동</td>
-										<td style="text-align:center;vertical-align:middle;">카드결제</td>
+										<td id="a1" style="text-align:center;vertical-align:middle;">${row.ORDER_NUM}</td>
+										<td style="text-align:center;vertical-align:middle;">${row.MEM_NAME}</td>
+										<td style="text-align:center;vertical-align:middle;">${row.ORDER_PAY}</td>
 										
-										<td style="text-align:center;vertical-align:middle;">마스크</td>
-										<td style="text-align:center;vertical-align:middle;">100개</td>
-										<td>
-										<select class="form-control" name="select" onchange="window.open(value,'_self');">
-										<option value ="#this">무통장입금전</option>
-										
-								<option value ="#this">결제완료</option>
-								<option value ="#this">배송중</option>
-								<option value ="#this">배송완료</option>
-								<option value ="#this">구매확정</option>
-							</select>
-								</td>
-										<td style="text-align:center;vertical-align:middle;">2021-03-10</td>	
-										<td><input type="button" value="저장" id="but" onclick="submit"/></td></tr>
+										<td style="text-align:center;vertical-align:middle;">${row.GOODS_NAME}</td>
+										<td style="text-align:center;vertical-align:middle;">${row.GOODS_CATEGORY}</td>
+										<td style="text-align:center;vertical-align:middle;">${row.GOODS_AMOUNT}</td>
+										<td style="text-align:center;vertical-align:middle;">
+										<select class="form-control" name="select" id="aorder_state">
+											<option value ="무통장입금전" <c:if test="${row.AORDER_STATE eq '무통장입금전' && row.ORDER_NUM!=null}"> selected </c:if>>무통장입금전</option>
+											<option value ="결제완료" <c:if test="${row.AORDER_STATE eq '결제완료'  && row.ORDER_NUM!=null}"> selected </c:if>>결제완료</option>
+											<option value ="배송중" <c:if test="${row.AORDER_STATE eq '배송중'  && row.ORDER_NUM!=null}"> selected="selected" </c:if>>배송중</option>
+											<option value ="배송완료" <c:if test="${row.AORDER_STATE eq '배송완료'  && row.ORDER_NUM!=null}"> selected="selected" </c:if>>배송완료</option>
+											<option value ="반품진행중" <c:if test="${row.AORDER_STATE eq '반품진행중'  && row.ORDER_NUM!=null}"> selected="selected" </c:if>>반품진행중</option>
+											<option value ="구매확정" <c:if test="${row.AORDER_STATE eq '구매확정'  && row.ORDER_NUM!=null}"> selected="selected" </c:if>>구매확정</option>
+										</select>
+										</td>
+										<td style="text-align:center;vertical-align:middle;">${row.ORDER_DATE }</td>	
+										<td><!-- <input type="button" value="저장" id="but" /> -->
+											<button id="${row.ORDER_NUM}" class="but222" onclick="btn(event,id)">저장</button>
+										</td>
+									</tr>
+								</c:forEach>
+             					</c:when>
+								<c:otherwise>
+         							<tr>
+        								<td colspan="10"> 주문 내역이 없습니다.</td>
+         							</tr>
+         						</c:otherwise>
+								</c:choose>
 								</tbody>
-								
 							</table>
+							
 						</div>
 					</div>
 					<div class="paging">
@@ -179,20 +204,20 @@ $.fn.rowspan = function(colIdx, isStats) {
 					<div class="row">
 							<div style="text-align:center;">
 								<div id="dataTables-example_filter" class="dataTables_filter">
-									<form action="">
-									<select class="form-control" name="searchNum" id="searchNum">
-										<option value="0">전체</option>
+									<select class="form-control" name="searchNum" id="searchName">
+										<option value="MEM_NAME" <c:if test="${list.get(0).name eq 'MEM_NAME'}"> selected </c:if>>주문자</option>
+										<option value="ORDER_NUM" <c:if test="${list.get(0).name eq 'ORDER_NUM'}"> selected </c:if>>주문번호</option>
 									</select>
-										<input class="form-control" type="text" name="isSearch" id="isSearch"/>
+										<input class="form-control" type="text" name="isSearch" id="SearchValue" value="${list.get(0).value }"/>
 										<span>
-										<button type="submit" class="btn btn-default">검색</button>
+										<button class="btn btn-default" id="searchBtn">검색</button>
 										</span>
-									</form>
-								</div>							
+								</div>
 							</div>
 							
 					</div>
 				</div>
+					
 			</div>
 			<!-- /.table-responsive -->							
 		</div>
@@ -200,15 +225,114 @@ $.fn.rowspan = function(colIdx, isStats) {
         <!-- /.panel -->   
 </div>
 
+
+
             <!-- // container -->
         </div>
         <!-- /#page-wrapper -->
+ 
 
-    </div>
+   
     <!-- /#wrapper -->
-
+   
     
+ <script type="text/javascript">
+
+    document.querySelector('#order_pay_search').addEventListener('change',(event)=>{
+	
+    	console.log(event.target.value);
+    	const value=event.target.value;
+        $.ajax({
+          type: "get",
+          url: "${root}/admin/orderList.mk?Select_ORDER_PAY="+value+"&&Select_AORDER_STATE=",
+          success : function test(data) {
+              $('body').load("${root}admin/orderList.mk ","Select_ORDER_PAY="+value);
+      	  }
+      	  
+        })
+        
+    })
+    
+    document.querySelector('#Select_AORDER_STATE').addEventListener('change',(event)=>{
+	
+    	console.log(event.target.value);
+    	const value=event.target.value;
+    	
+        $.ajax({
+          type: "get",
+          url: "${root}/admin/orderList.mk?Select_AORDER_STATE="+value,
+          success : function test(data) {
+              $('body').load("${root}admin/orderList.mk","Select_AORDER_STATE="+value);
+      	}
+        })
+    })
+    
+    
+    
+    <!--주문상태 변경-->
+    
+        function btn(event,id){
+		
+			console.log("존재");
+			console.log(id);
+
+			const idv="#"+id;
+
+			ORDER_NUM=$(idv).parent('td').parent('tr').children().first().text();
+			AORDER_STATE=$(idv).parent('td').parent('tr').find('#aorder_state').val();
+				
+			console.log(ORDER_NUM);
+			console.log(AORDER_STATE);
+			
+			$.ajax({
+	   				type:"post",
+	   				url:"${root}admin/orderUpdate.mk?AORDER_STATE="+AORDER_STATE+"&&ORDER_NUM="+ORDER_NUM,
+	   				success:function(data){
+	   					alert('변경되었습니다.');
+	   					$('body').load("${root}admin/orderList.mk","Select_AORDER_STATE="+AORDER_STATE);
+	   				}
+	   			
+	   		})
+			
+		}
+        
+    
+    <!-- 검색 -->
+    document.querySelector('#searchBtn').addEventListener('click',()=>{
+        const element = document.querySelector('#searchName').value;
+        let value=document.querySelector('#SearchValue').value
+        
+        console.log(element);
+        console.log(value);
+        
+        $.ajax({
+        	type: "get",
+        	url:"${root}admin/orderList.mk?name="+element+"&&value="+value,
+        	success:function(data){
+        		console.log('성공');
+        		$('body').load("${root}admin/orderList.mk","name="+element+"&&value="+value);
+        	}
+        })
+        
+      })
+
+      	
+      document.querySelector('#btnAAA').addEventListener('click',(event)=>{
+    	  event.preventDefault();
+    	  $.ajax({
+          	type: "get",
+          	url:"${root}admin/orderList.mk",
+          	success:function(){
+          		$('body').load("${root}admin/orderList.mk");
+          	}
+          })
+      })
+    </script> 
+
 
 </body>
+</div>
+</div>
+  
 
 </html>
