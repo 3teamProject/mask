@@ -25,72 +25,72 @@
                    <tr>
                         <th>
                             <span>이름</span>
-                            <td>홍길동</td>
+                            <td>${map.MEM_NAME}</td>
                         </th>
                       </tr>
                   <tr>
                   <tr>
                     <th><span>우편번호</span></th>
                     <td>
-                      12345
+                     ${map.MEM_ZIPCODE}
                     </td>
                   </tr>
                   <tr>
                     <th><span>주소</span></th>
                     <td>
-                        서울 종로구
+                       ${map.MEM_ADDRESS1} ${map.MEM_ADDRESS2}
                     </td>
                   </tr>
                   <tr>
                     <th><span>유선전화</span></th>
-                    <td>02-1234-5678</td>
+                    <td>${map.MEM_PHONE}</td>
                   </tr>
                   <tr>
                     <th><span>휴대전화</span></th>
-                    <td>010-1234-5678</td>
+                    <td>${map.MEM_PHONE}</td>
                   </tr>
                   <tr>
                     <th><span>Email</span></th>
-                    <td>abcd@naver.com</td>
+                    <td>${map.MEM_EMAIL}</td>
                   </tr>
                   <tr>
                     <th colspan="2"><label>배송지</label></th>
                   </tr>
                   <tr>
+                  	<th><span>이름</span></th>
+                  	<td>${map2.ORDER_NAME}</td>
+                  </tr>
+                  <tr>
                     <th><span>우편번호</span></th>
-                    <td>56778</td>
+                    <td>${map2.ORDER_DZIPCODE}</td>
                   </tr>
                   <tr>
                     <th><span>주소</span></th>
-                    <td>서울 서대문구 홍제동</td>
+                    <td> ${map2.ORDER_DADD1} ${map2.ORDER_DADD2}</td>
                   </tr>
                   <tr>
                     <th><span>유선전화</span></th>
-                    <td>02-1234-5678</td>
+                    <td>${map2.ORDER_PHONE}</td>
                   </tr>
                   <tr>
                     <th><span>휴대전화</span></th>
-                    <td>010-1234-5678</td>
-                  </tr>
-                  <tr>
-                    <th><span>Email</span></th>
-                    <td>abcd@naver.com</td>
+                    <td>${map2.ORDER_PHONE}</td>
                   </tr>
                   <tr>
                     <th><span>배송메시지</span></th>
-                    <td>문앞</td>
+                    <td>${map2.ORDER_DMEMO}</td>
                   </tr>
                   <tr>
                     <th><span>결제방식</span></th>
-                    <td>무통장 입금</td>
+                    <td>${map2.ORDER_PAY}</td>
                   </tr>
                 </tbody>
               </table>
                 <div class="text" style="margin-bottom: 30px;">
                   입금계좌 : 국민은행 1002-111-11111 이젠마스크
-                  <div>결제금액 : ${3000}원</div>
+                  <div>결제금액 : ${map2.ORDER_TCOST}원</div>
                 </div>
-              <button>쇼핑하러가기</button>
+              <button onclick="location.href='main/openMainList.mk'">쇼핑하러가기</button>
         </div>
         </div>
       </div>
